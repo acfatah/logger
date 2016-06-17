@@ -12,7 +12,6 @@
 
 namespace Acfatah\Logger;
 
-use RuntimeException;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Acfatah\Logger\HandlerInterface;
