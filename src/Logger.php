@@ -59,7 +59,7 @@ class Logger extends AbstractLogger implements LoggerInterface
      *     [psr]: https://github.com/php-fig/log/blob/master/Psr/Log/LogLevel.php
      * @param \Acfatah\Logger\HandlerInterface $handler Log handler
      */
-    public function pushHandler($level, HandlerInterface $handler)
+    public function push($level, HandlerInterface $handler)
     {
         $this->handlers[$level][] = $handler;
 
@@ -73,7 +73,7 @@ class Logger extends AbstractLogger implements LoggerInterface
      *     [psr]: https://github.com/php-fig/log/blob/master/Psr/Log/LogLevel.php
      * @param \Acfatah\Logger\HandlerInterface $handler Log handler
      */
-    public function unshiftHandler($level, HandlerInterface $handler)
+    public function unshift($level, HandlerInterface $handler)
     {
         if (!isset($this->handlers[$level])) {
             $this->handlers[$level] = [];
@@ -89,7 +89,7 @@ class Logger extends AbstractLogger implements LoggerInterface
      * @param string $level See [`\Psr\Log\LogLevel`][psr].
      *     [psr]: https://github.com/php-fig/log/blob/master/Psr/Log/LogLevel.php
      */
-    public function popHandler($level)
+    public function pop($level)
     {
         array_pop($this->handlers[$level]);
 
@@ -102,7 +102,7 @@ class Logger extends AbstractLogger implements LoggerInterface
      * @param string $level See [`\Psr\Log\LogLevel`][psr].
      *     [psr]: https://github.com/php-fig/log/blob/master/Psr/Log/LogLevel.php
      */
-    public function shiftHandler($level)
+    public function shift($level)
     {
         array_shift($this->handlers[$level]);
 

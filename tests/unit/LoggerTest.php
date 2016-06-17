@@ -28,7 +28,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $logger = new Acfatah\Logger\Logger($stub);
         $logger
-            ->pushHandler('INFO', $stub);
+            ->push('INFO', $stub);
         $logger->log('INFO', 'A test...');
     }
 
@@ -41,7 +41,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $logger = new Acfatah\Logger\Logger($stub);
         $logger
-            ->unshiftHandler('INFO', $stub);
+            ->unshift('INFO', $stub);
         $logger->log('INFO', 'A test...');
     }
 
@@ -59,10 +59,10 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $logger = new Acfatah\Logger\Logger($stub);
         $logger
-            ->pushHandler('INFO', $popedHandler)
+            ->push('INFO', $popedHandler)
             ->log('INFO', 'First test...');
         $logger
-            ->popHandler('INFO')
+            ->pop('INFO')
             ->log('INFO', 'Second test...');
     }
 
@@ -80,10 +80,10 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
         $logger = new Acfatah\Logger\Logger($stub);
         $logger
-            ->pushHandler('INFO', $popedHandler)
+            ->push('INFO', $popedHandler)
             ->log('INFO', 'First test...');
         $logger
-            ->shiftHandler('INFO')
+            ->shift('INFO')
             ->log('INFO', 'Second test...');
     }
 
