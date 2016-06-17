@@ -47,7 +47,7 @@ class Logger extends AbstractLogger implements LoggerInterface
      * @param \Acfatah\Logger\HandlerInterface $defaultHandler Default log handler
      * @throws \RuntimeException
      */
-    public function __construct(HandlerInterface $defaultHandler)
+    public function __construct(HandlerInterface $defaultHandler = null)
     {
         $this->defaultHandler = $defaultHandler;
         $this->handlers = [];
@@ -123,7 +123,9 @@ class Logger extends AbstractLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
-        $this->defaultHandler->log($level, $message, $context);
+        if (isset($this->defaultHandler)) {
+            $this->defaultHandler->log($level, $message, $context);
+        }
 
         if (isset($this->handlers[$level])) {
             foreach ($this->handlers[$level] as $logger) {
