@@ -15,6 +15,7 @@ namespace Acfatah\Logger;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Acfatah\Logger\HandlerInterface;
+use Acfatah\Logger\Handler\FileHandler;
 
 /**
  * Logs data using handler(s).
@@ -33,23 +34,21 @@ class Logger extends AbstractLogger implements LoggerInterface
     /**
      * @var \Acfatah\Logger\HandlerInterface
      */
-    protected $defaultHandler;
+    private $defaultHandler;
 
     /**
-     * @var array
+     * @var \Acfatah\ErrorHandler\Logger\HandlerInterface[]
      */
-    protected $handlers;
+    protected $handlers = [];
 
     /**
      * Constructor.
      *
      * @param \Acfatah\Logger\HandlerInterface $defaultHandler Default log handler
-     * @throws \RuntimeException
      */
     public function __construct(HandlerInterface $defaultHandler = null)
     {
-        $this->defaultHandler = $defaultHandler;
-        $this->handlers = [];
+        $this->setDefaultHandler($defaultHandler);
     }
 
     /**
@@ -122,15 +121,12 @@ class Logger extends AbstractLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = [])
     {
-        if (isset($this->defaultHandler)) {
-            $this->defaultHandler->log($level, $message, $context);
-        }
+        $this->getDefaultHandler()->log($level, $message, $context);
 
         if (isset($this->handlers[$level])) {
             foreach ($this->handlers[$level] as $logger) {
                 $logger->log($level, $message, $context);
             }
-
         }
     }
 
@@ -145,5 +141,20 @@ class Logger extends AbstractLogger implements LoggerInterface
         $this->defaultHandler = $defaultHandler;
 
         return $this;
+    }
+
+    /**
+     * Gets the default log handler.
+     *
+     * @return \Acfatah\ErrorHandler\Logger\HandlerInterface
+     */
+    public function getDefaultHandler()
+    {
+        if (is_null($this->defaultHandler)) {
+            $this->setDefaultHandler(
+                new FileHandler(new DefaultFormatter, ini_get('error_log'))
+            );
+        }
+        return $this->defaultHandler;
     }
 }
