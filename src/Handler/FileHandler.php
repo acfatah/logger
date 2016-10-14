@@ -14,12 +14,13 @@ namespace Acfatah\Logger\Handler;
 
 use Acfatah\Logger\FormatterInterface;
 use Acfatah\Logger\HandlerInterface;
+use Acfatah\Logger\Formatter\DefaultFormatter;
 
 /**
  * Uses php **error_log** function with option **3** to log error to destination.
  *
  * Read more about `error_log` function at [php.net][1].
- * 
+ *
  * [1]: http://php.net/manual/en/function.error-log.php
  *
  * @author Achmad F. Ibrahim <acfatah@gmail.com>
@@ -43,10 +44,11 @@ class FileHandler implements HandlerInterface
      *
      * @param string $destination
      */
-    public function __construct(FormatterInterface $formatter, $destination)
+    public function __construct($destination, FormatterInterface $formatter = null)
     {
-        $this->formatter = $formatter;
-        $this->destination = $destination;
+        $this
+            ->setFormatter($formatter)
+            ->setDestination($destination);
     }
 
     /**
@@ -55,9 +57,58 @@ class FileHandler implements HandlerInterface
     public function log($level, $message, $context)
     {
         return error_log(
-            $this->formatter->format($level, $message, $context),
+            $this->getFormatter()->format($level, $message, $context),
             3,
-            $this->destination
+            $this->getDestination()
         );
+    }
+
+    /**
+     * Formatter setter.
+     *
+     * @param \Acfatah\Logger\FormatterInterface $formatter
+     * @return static
+     */
+    public function setFormatter(FormatterInterface $formatter)
+    {
+        $this->formatter = $formatter;
+
+        return $this;
+    }
+
+    /**
+     * Formatter getter.
+     *
+     * @return \Acfatah\Logger\FormatterInterface
+     */
+    public function getFormatter()
+    {
+        if (null === $this->formatter) {
+            $this->setFormatter(new DefaultFormatter);
+        }
+        return $this->formatter;
+    }
+
+    /**
+     * Destination setter.
+     *
+     * @param string $destination
+     * @return static
+     */
+    public function setDestination($destination)
+    {
+        $this->destination = $destination;
+
+        return $this;
+    }
+
+    /**
+     * Destination getter.
+     *
+     * @return string
+     */
+    public function getDestination()
+    {
+        return $this->destination;
     }
 }

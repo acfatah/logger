@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+[dev-master] - 2016-10-14
+-------------------------
+
+### Changed
+- Formatter for `Acfatah\Logger\Handler\FileHandler` constructor is now optional
+- `Acfatah\Logger\Handler\FileHandler` uses `Acfatah\Logger\Formatter\DefaultFormatter` as default formatter
+
 [dev-master] - 2016-06-17
 -------------------------
 
